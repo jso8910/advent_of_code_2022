@@ -23,7 +23,7 @@ def move_pile_part_two(start: Deque[str], end: Deque[str], number_moved: int):
 
 
 def get_input():
-    with open("day 5/input.txt", "r") as f:
+    with open("day_5/input.txt", "r") as f:
         input_initial, file = f.read().split('\n\n')
     input_initial = input_initial.splitlines()[:-1]
     stacks = []
@@ -46,7 +46,7 @@ def part_one(stacks, file):
             move_pile(
                 stacks[start], stacks[end])
 
-    print(''.join([thing[0] for thing in stacks]))
+    return ''.join([thing[0] for thing in stacks])
 
 
 def part_two(stacks, file):
@@ -58,8 +58,8 @@ def part_two(stacks, file):
         move_pile_part_two(
             stacks[start], stacks[end], number_moved)
 
-    print(''.join([thing[0] for thing in stacks]))
+    return ''.join([thing[0] for thing in stacks])
 
 
-part_one(*get_input())
-part_two(*get_input())
+print(part_one(*get_input()))
+print(part_two(*get_input()))

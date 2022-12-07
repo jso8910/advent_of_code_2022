@@ -1,8 +1,8 @@
-import copy
+ITERS_RUN = 0
 
 
 def get_input():
-    with open("day 7/input.txt", "r") as f:
+    with open("day_7/input.txt", "r") as f:
         return f.readlines()
 
 
@@ -45,9 +45,11 @@ def gen_fs(file: list[str]):
 
 
 def size_of_dir(dict):
+    global ITERS_RUN
     size = 0
     # print(str(dict))
     for key, value in dict.items():
+        ITERS_RUN += 1
         if isinstance(value, int):
             size += value
         elif not isinstance(value, int):
@@ -57,12 +59,14 @@ def size_of_dir(dict):
 
 
 def walk_dict_part_one(dict, root=True):
+    global ITERS_RUN
     total_less_100k = 0
     if root:
         total_size = size_of_dir(dict)
         if total_size <= 100_000:
             total_less_100k += total_size
     for key, value in dict.items():
+        ITERS_RUN += 1
         if not isinstance(value, int):
             size = size_of_dir(value)
             if size <= 100_000:
@@ -86,7 +90,7 @@ def walk_dict_part_two(dict, space_to_free, lowest_space=70_000_001):
 def part_one(file: list[str]):
     fs = gen_fs(file)
 
-    print(walk_dict_part_one(fs))
+    return walk_dict_part_one(fs)
 
 
 def part_two(file: list[str]):
@@ -96,8 +100,25 @@ def part_two(file: list[str]):
     space_used = size_of_dir(fs)
     space_to_free = SPACE_REQUIRED - (TOTAL_SPACE - space_used)
 
-    print(walk_dict_part_two(fs, space_to_free))
+    return walk_dict_part_two(fs, space_to_free)
 
 
-part_one(get_input())
-part_two(get_input())
+print(part_one(get_input()))
+print(part_two(get_input()))
+
+# performance eval
+print(ITERS_RUN)
+
+
+def count(prod, c=0, onlyDict=False):
+    for mykey, value in prod.items():
+        if isinstance(prod[mykey], dict):
+            # calls repeatedly
+            c = count(prod[mykey], c + 1, onlyDict=onlyDict)
+        elif not onlyDict:
+            c += 1
+    return c
+
+
+print(count(gen_fs(get_input())))
+print(count(gen_fs(get_input()), onlyDict=True))

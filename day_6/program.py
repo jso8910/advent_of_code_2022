@@ -1,5 +1,5 @@
 def get_input():
-    with open("day 6/input.txt", "r") as f:
+    with open("day_6/input.txt", "r") as f:
         return f.read()
 
 
@@ -10,7 +10,7 @@ def part_one(file):
         if len(set(file[i:i+LEN_MARKER])) == LEN_MARKER:
             marker_end = i + LEN_MARKER
             break
-    print(marker_end)
+    return marker_end
 
 
 def part_two(file):
@@ -20,8 +20,8 @@ def part_two(file):
         if len(set(file[i:i+LEN_MARKER])) == LEN_MARKER:
             marker_end = i + LEN_MARKER
             break
-    print(marker_end)
+    return marker_end
 
 
-part_one(get_input())
-part_two(get_input())
+print(part_one(get_input()))
+print(part_two(get_input()))

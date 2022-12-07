@@ -1,5 +1,5 @@
 def part_one():
-    with open("day 2/input.txt", "r") as f:
+    with open("day_2/input.txt", "r") as f:
         file = f.readlines()
     strategy: list[tuple[str, str]] = []
 
@@ -26,11 +26,11 @@ def part_one():
         elif strat[0] == "S" and strat[1] == "R":
             total_points += 6
 
-    print(total_points)
+    return total_points
 
 
 def part_two():
-    with open("day 2/input.txt", "r") as f:
+    with open("day_2/input.txt", "r") as f:
         file = f.readlines()
     strategy: list[tuple[str, str]] = []
 
@@ -56,7 +56,8 @@ def part_two():
             total_points += points[opponent_choice]
             total_points += 3
 
-    print(total_points)
+    return total_points
 
 
-part_two()
+print(part_one())
+print(part_two())

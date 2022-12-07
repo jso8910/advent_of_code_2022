@@ -1,5 +1,5 @@
 def part_one():
-    with open("day 4/input.txt", "r") as f:
+    with open("day_4/input.txt", "r") as f:
         file = f.readlines()
 
     pairs: list[list[list[int]]] = []
@@ -18,11 +18,11 @@ def part_one():
         x = set(longer_pair)
         if x.intersection(shorter_pair) == set(shorter_pair):
             count_fully_containing += 1
-    print(count_fully_containing)
+    return count_fully_containing
 
 
 def part_two():
-    with open("day 4/input.txt", "r") as f:
+    with open("day_4/input.txt", "r") as f:
         file = f.readlines()
 
     pairs: list[list[list[int]]] = []
@@ -41,7 +41,8 @@ def part_two():
         x = set(longer_pair)
         if x.intersection(shorter_pair) != set():
             count_intersecting += 1
-    print(count_intersecting)
+    return count_intersecting
 
 
-part_two()
+print(part_one())
+print(part_two())

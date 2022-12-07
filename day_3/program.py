@@ -2,7 +2,7 @@ import string
 
 
 def part_one():
-    with open("day 3/input.txt", "r") as f:
+    with open("day_3/input.txt", "r") as f:
         file = f.readlines()
     priorities = {letter: priority + 1 for priority,
                   letter in enumerate(string.ascii_letters)}
@@ -19,11 +19,11 @@ def part_one():
                 priority_sum += priorities[item]
                 break
 
-    print(priority_sum)
+    return priority_sum
 
 
 def part_two():
-    with open("day 3/input.txt", "r") as f:
+    with open("day_3/input.txt", "r") as f:
         file = f.readlines()
     priorities = {letter: priority + 1 for priority,
                   letter in enumerate(string.ascii_letters)}
@@ -49,7 +49,8 @@ def part_two():
             if value == [True, True, True]:
                 priority_sum += priorities[key]
 
-    print(priority_sum)
+    return priority_sum
 
 
-part_two()
+print(part_one())
+print(part_two())
