@@ -15,8 +15,7 @@ def move_pile(start: list[str], end: list[str]):
 
 def move_pile_part_two(start: list[str], end: list[str], number_moved: int):
     for i in range(number_moved, 0, -1):
-        end.append(start[len(start) - i - 1])
-        del start[len(start) - i - 1]
+        end.append(start.pop(len(start) - i - 1))
     return start, end
 
 

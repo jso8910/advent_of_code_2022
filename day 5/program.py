@@ -4,7 +4,7 @@ import itertools
 
 
 def rotate_matrix(A):
-    new = list(map(deque, itertools.zip_longest(*A, fillvalue=None)))
+    new = list(map(deque, zip(*A)))
     for idx, n in enumerate(new):
         new[idx] = deque(thing for thing in n if thing != ' ')
     return new
