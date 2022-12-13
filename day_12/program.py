@@ -1,3 +1,5 @@
+import curses
+from time import sleep
 import math
 from copy import deepcopy
 
@@ -59,7 +61,7 @@ def get_neighbors(grid, point, reverse_neighbor_height=False):
     return neighbors
 
 
-def dijkstra(grid, start, end, return_all=False, reverse_neighbor_height=False):
+def dijkstra(grid, start, end, return_all=False, reverse_neighbor_height=False, return_prev=False):
     dist_from_start = [[math.inf for _ in r] for r in grid]
     dist_from_start[start[0]][start[1]] = 0
     visited = []
@@ -71,7 +73,10 @@ def dijkstra(grid, start, end, return_all=False, reverse_neighbor_height=False):
     prev = [[None for _ in r] for r in grid]
 
     while unvisited:
-        # print(current_point)
+        # if not end and grid[current_point[0]][current_point[1]] == 0:
+        #     return dist_from_start[current_point[0]][current_point[1]]
+        # elif end and grid[current_point[0]][current_point[1]] == end:
+        #     return dist_from_start[end[0]][end[1]]
         current_neighbors = get_neighbors(
             grid, current_point, reverse_neighbor_height=reverse_neighbor_height)
         for neighbor in current_neighbors:
@@ -91,10 +96,90 @@ def dijkstra(grid, start, end, return_all=False, reverse_neighbor_height=False):
                 minimum_d = dist_from_start[item[0]][item[1]]
         if minimum_d == math.inf:
             break
+
+    if return_all and return_prev:
+        return dist_from_start, prev
     if return_all:
         return dist_from_start
 
     return dist_from_start[end[0]][end[1]]
+
+
+def visualize_path(window: curses.window, grid, start, end, max_it=1, delay=0.001):
+    curses.curs_set(0)
+    d, p = dijkstra(grid, start, end, return_all=True, return_prev=True)
+    line = []
+    current_point = end
+    while current_point:
+        line.append(current_point)
+        current_point = p[current_point[0]][current_point[1]]
+    if line == [end]:
+        return
+    line.reverse()
+    current_idx = 0
+    current_up = True
+    current_down = False
+    current_left = False
+    current_right = False
+    num_it = 0
+    while True:
+        if line[current_idx][0] - line[current_idx+1 if current_idx+1 < len(line) else current_idx][0] == 1:
+            if not current_up:
+                char = "┘" if current_right else "└"
+                current_up = True
+                current_down = False
+                current_left = False
+                current_right = False
+            else:
+                char = "│"
+        elif line[current_idx][0] - line[current_idx+1 if current_idx+1 < len(line) else current_idx][0] == -1:
+            if not current_down:
+                char = "┐" if current_right else "┌"
+                current_up = False
+                current_down = True
+                current_left = False
+                current_right = False
+            else:
+                char = "│"
+        elif line[current_idx][1] - line[current_idx+1 if current_idx+1 < len(line) else current_idx][1] == 1:
+            if not current_left:
+                char = "┐" if current_up else "┘"
+                current_up = False
+                current_down = False
+                current_left = True
+                current_right = False
+            else:
+                char = "─"
+
+        elif line[current_idx][1] - line[current_idx+1 if current_idx+1 < len(line) else current_idx][1] == -1:
+            if not current_right:
+                char = "┌" if current_up else "└"
+                current_up = False
+                current_down = False
+                current_left = False
+                current_right = True
+            else:
+                char = "─"
+        else:
+            char = "─"
+
+        window.addch(line[current_idx][0], line[current_idx][1], char)
+        window.addch(start[0], start[1], 'S')
+        window.addch(end[0], end[1], 'E')
+        window.refresh()
+        current_idx += 1
+        if current_idx == len(line):
+            for p in line[::-1]:
+                window.addch(p[0], p[1], ' ')
+                # window.addch(start[0], start[1], 'S')
+                window.addch(end[0], end[1], 'E')
+                window.refresh()
+                current_idx = 0
+                sleep(delay)
+            num_it += 1
+        sleep(delay)
+        if num_it == max_it:
+            break
 
 
 def part_one(grid, start, end):
@@ -113,6 +198,20 @@ def part_two(grid, _, end):
                 minimum = dist
     return minimum
 
+
+def visualize_all():
+    grid, start, end = get_input()
+    # starts = []
+    # for r_idx, row in enumerate(grid):
+    #     for c_idx, val in enumerate(row):
+    #         if val == 0:
+    #             starts.append((r_idx, c_idx))
+
+    # for start in starts:
+    curses.wrapper(visualize_path, grid, start, end, delay=0.1)
+
+
+# visualize_all()
 
 print(part_one(*get_input()))
 print(part_two(*get_input()))
