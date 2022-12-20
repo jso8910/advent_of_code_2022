@@ -20,7 +20,7 @@ def get_edges(point):
     return edges
 
 
-def part_one(coords):
+def get_sides(coords):
     # I don't really understand why sides can't be a se and why that makes it too small
     sides = []
     for coord in coords:
@@ -33,27 +33,16 @@ def part_one(coords):
 
     for d in to_del:
         sides.remove(d)
+    return sides
 
-    return len(sides)
+
+def part_one(coords):
+    return len(get_sides(coords))
 
 
 def part_two(coords):
-    sides = []
-    for coord in coords:
-        sides.append((coord[0]+1, coord[1], coord[2]))
-        sides.append((coord[0], coord[1]+1, coord[2]))
-        sides.append((coord[0], coord[1], coord[2]+1))
-        sides.append((coord[0]-1, coord[1], coord[2]))
-        sides.append((coord[0], coord[1]-1, coord[2]))
-        sides.append((coord[0], coord[1], coord[2]-1))
+    sides = get_sides(coords)
 
-    to_del = []
-    for side in sides:
-        if side in coords:
-            to_del.append(side)
-
-    for d in to_del:
-        sides.remove(d)
     discovered = []
 
     maxes = (max(x for x in [side[0] for side in sides]) + 1, max(y for y in [side[1]
