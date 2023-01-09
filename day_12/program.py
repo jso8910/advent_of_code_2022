@@ -73,10 +73,6 @@ def dijkstra(grid, start, end, return_all=False, reverse_neighbor_height=False, 
     prev = [[None for _ in r] for r in grid]
 
     while unvisited:
-        # if not end and grid[current_point[0]][current_point[1]] == 0:
-        #     return dist_from_start[current_point[0]][current_point[1]]
-        # elif end and grid[current_point[0]][current_point[1]] == end:
-        #     return dist_from_start[end[0]][end[1]]
         current_neighbors = get_neighbors(
             grid, current_point, reverse_neighbor_height=reverse_neighbor_height)
         for neighbor in current_neighbors:
